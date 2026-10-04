@@ -1,15 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  Float,
-  OrbitControls,
-  Environment,
-  Sphere,
-  Line,
-} from "@react-three/drei";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
+import { OrbitControls, Sphere, Line } from "@react-three/drei";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -25,48 +16,65 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+/* =========================================================
+   PERSONAL INFORMATION
+   ========================================================= */
 
-/* ---------------- PROJECT DATA ---------------- */
+const PERSONAL = {
+  name: "Karishma Mukilan",
+  email: "karishmamukilan2008@gmail.com",
+  github: "https://github.com/karishmamukilan20",
+  linkedin:
+    "https://www.linkedin.com/in/karishma-mukilan-5151373b4/",
+  resume: "/resume.pdf",
+};
+
+/* =========================================================
+   PROJECTS
+   ========================================================= */
 
 const projects = [
   {
     number: "01",
     title: "Railway Track Health Monitoring",
     description:
-      "A low-cost acoustic and vibration based system for detecting railway track anomalies and health conditions.",
+      "A low-cost acoustic and vibration based system for detecting railway track anomalies and monitoring track health.",
     tags: ["IoT", "Signal Processing", "Python", "EEE"],
     category: "Engineering",
     link: "#",
-    github: "#",
+    github: PERSONAL.github,
   },
   {
     number: "02",
     title: "Smart Portfolio",
     description:
-      "A modern interactive developer portfolio designed with immersive UI, responsive layouts and smooth animations.",
-    tags: ["React", "Three.js", "Tailwind", "GSAP"],
+      "A futuristic personal portfolio combining modern web development with an interactive 3D experience.",
+    tags: ["React", "Three.js", "JavaScript", "UI/UX"],
     category: "Web Development",
-    link: "#",
-    github: "#",
+    link: "#home",
+    github: PERSONAL.github,
   },
   {
     number: "03",
     title: "Gold Price Tracker",
     description:
-      "A clean web application concept for monitoring gold prices and presenting financial information simply.",
-    tags: ["React", "API", "JavaScript", "UI/UX"],
+      "A web application concept for monitoring gold prices and presenting financial information through a simple interface.",
+    tags: ["React", "API", "JavaScript", "UI"],
     category: "Web Application",
     link: "#",
-    github: "#",
+    github: PERSONAL.github,
   },
 ];
+
+/* =========================================================
+   SKILLS
+   ========================================================= */
 
 const skills = [
   {
     title: "Programming",
     icon: <Code2 size={22} />,
-    items: ["C", "C++", "JavaScript", "Python"],
+    items: ["C", "C++", "Java", "JavaScript"],
   },
   {
     title: "Frontend",
@@ -74,42 +82,42 @@ const skills = [
     items: ["HTML", "CSS", "React", "Tailwind CSS"],
   },
   {
-    title: "Backend",
+    title: "MERN Stack",
     icon: <Database size={22} />,
-    items: ["Node.js", "Express.js", "REST APIs"],
+    items: ["MongoDB", "Express.js", "React", "Node.js"],
   },
   {
     title: "Engineering",
     icon: <Cpu size={22} />,
     items: [
-      "Electrical Basics",
       "Embedded Systems",
+      "Automation",
       "IoT",
-      "EV Technology",
+      "Electrical Engineering",
     ],
   },
 ];
 
-/* ============================================================
-   FUTURISTIC AI / ENGINEERING HOLOGRAPHIC SPHERE
-   ============================================================ */
+/* =========================================================
+   HOLOGRAPHIC SPHERE
+   ========================================================= */
 
 function HolographicSphere() {
-  const group = useRef();
-  const core = useRef();
-  const innerShell = useRef();
-  const outerShell = useRef();
+  const groupRef = useRef(null);
+  const coreRef = useRef(null);
+  const ringOneRef = useRef(null);
+  const ringTwoRef = useRef(null);
 
   const nodes = [
-    [1.25, 0.25, 0.45],
-    [-1.2, 0.35, 0.25],
-    [0.35, 1.25, 0.2],
-    [-0.3, -1.3, 0.25],
-    [0.55, 0.25, 1.25],
-    [-0.55, -0.2, -1.25],
-    [0.95, 0.75, -0.55],
-    [-0.9, -0.7, 0.65],
-    [0.15, -0.7, 1.0],
+    [1.25, 0.2, 0.35],
+    [-1.2, 0.35, 0.3],
+    [0.35, 1.25, 0.15],
+    [-0.3, -1.25, 0.25],
+    [0.5, 0.25, 1.25],
+    [-0.5, -0.2, -1.25],
+    [0.95, 0.7, -0.5],
+    [-0.9, -0.7, 0.6],
+    [0.2, -0.7, 1.0],
     [-0.2, 0.75, -1.0],
   ];
 
@@ -134,239 +142,165 @@ function HolographicSphere() {
   useFrame((state) => {
     const time = state.clock.elapsedTime;
 
-    if (group.current) {
-      group.current.rotation.y = time * 0.16;
-      group.current.rotation.x =
-        Math.sin(time * 0.35) * 0.08;
-      group.current.rotation.z =
-        Math.cos(time * 0.25) * 0.05;
+    if (groupRef.current) {
+      groupRef.current.rotation.y = time * 0.12;
+      groupRef.current.rotation.x = Math.sin(time * 0.35) * 0.08;
     }
 
-    if (core.current) {
-      const pulse =
-        1 +
-        Math.sin(time * 3.5) * 0.12;
-
-      core.current.scale.setScalar(pulse);
+    if (ringOneRef.current) {
+      ringOneRef.current.rotation.y = time * 0.35;
+      ringOneRef.current.rotation.x = 0.8;
     }
 
-    if (innerShell.current) {
-      innerShell.current.rotation.y =
-        -time * 0.28;
-
-      innerShell.current.rotation.x =
-        time * 0.12;
+    if (ringTwoRef.current) {
+      ringTwoRef.current.rotation.z = -time * 0.28;
+      ringTwoRef.current.rotation.x = 1.15;
     }
 
-    if (outerShell.current) {
-      outerShell.current.rotation.y =
-        time * 0.08;
-
-      outerShell.current.rotation.z =
-        -time * 0.06;
+    if (coreRef.current) {
+      const pulse = 1 + Math.sin(time * 3) * 0.12;
+      coreRef.current.scale.setScalar(pulse);
     }
   });
 
   return (
-    <Float
-      speed={1.3}
-      rotationIntensity={0.18}
-      floatIntensity={0.65}
-    >
-      <group ref={group} scale={1.35}>
+    <group ref={groupRef} scale={1.25}>
+      {/* Outer wireframe shell */}
+      <Sphere args={[1.5, 48, 48]}>
+        <meshBasicMaterial
+          color="#8b5cf6"
+          wireframe
+          transparent
+          opacity={0.16}
+        />
+      </Sphere>
 
-        {/* =====================================================
-            OUTER HOLOGRAPHIC SHELL
-            ===================================================== */}
+      {/* Second shell */}
+      <Sphere args={[1.3, 32, 32]}>
+        <meshBasicMaterial
+          color="#c4b5fd"
+          wireframe
+          transparent
+          opacity={0.18}
+        />
+      </Sphere>
 
-        <group ref={outerShell}>
+      {/* Inner shell */}
+      <Sphere args={[1.05, 32, 32]}>
+        <meshBasicMaterial
+          color="#a78bfa"
+          wireframe
+          transparent
+          opacity={0.3}
+        />
+      </Sphere>
 
-          <Sphere args={[1.5, 48, 48]}>
-            <meshBasicMaterial
-              color="#8b5cf6"
-              wireframe
-              transparent
-              opacity={0.18}
-            />
-          </Sphere>
+      {/* Orbital ring 1 */}
+      <mesh ref={ringOneRef}>
+        <torusGeometry args={[1.65, 0.012, 12, 128]} />
+        <meshBasicMaterial
+          color="#a78bfa"
+          transparent
+          opacity={0.7}
+        />
+      </mesh>
 
-          <Sphere args={[1.42, 32, 32]}>
-            <meshBasicMaterial
-              color="#c4b5fd"
-              wireframe
-              transparent
-              opacity={0.12}
-            />
-          </Sphere>
+      {/* Orbital ring 2 */}
+      <mesh ref={ringTwoRef}>
+        <torusGeometry args={[1.72, 0.008, 12, 128]} />
+        <meshBasicMaterial
+          color="#ffffff"
+          transparent
+          opacity={0.35}
+        />
+      </mesh>
 
-        </group>
+      {/* Circuit connections */}
+      {connections.map((connection, index) => (
+        <Line
+          key={`connection-${index}`}
+          points={connection}
+          color="#a78bfa"
+          transparent
+          opacity={0.55}
+          lineWidth={1}
+        />
+      ))}
 
-        {/* =====================================================
-            INNER DIGITAL SHELL
-            ===================================================== */}
+      {/* Circuit nodes */}
+      {nodes.map((position, index) => (
+        <mesh key={`node-${index}`} position={position}>
+          <sphereGeometry
+            args={[
+              index % 3 === 0 ? 0.075 : 0.045,
+              16,
+              16,
+            ]}
+          />
 
-        <group ref={innerShell}>
+          <meshBasicMaterial
+            color={index % 3 === 0 ? "#ffffff" : "#c4b5fd"}
+          />
+        </mesh>
+      ))}
 
-          <Sphere args={[1.13, 32, 32]}>
-            <meshBasicMaterial
-              color="#a78bfa"
-              wireframe
-              transparent
-              opacity={0.42}
-            />
-          </Sphere>
+      {/* Central AI core */}
+      <group ref={coreRef}>
+        <Sphere args={[0.22, 32, 32]}>
+          <meshBasicMaterial color="#ffffff" />
+        </Sphere>
 
-          <Sphere args={[0.92, 24, 24]}>
-            <meshBasicMaterial
-              color="#ddd6fe"
-              wireframe
-              transparent
-              opacity={0.18}
-            />
-          </Sphere>
-
-        </group>
-
-        {/* =====================================================
-            ORBITAL RINGS
-            ===================================================== */}
-
-        <mesh rotation={[Math.PI / 2, 0.25, 0]}>
-          <torusGeometry args={[1.62, 0.012, 12, 128]} />
+        <Sphere args={[0.38, 32, 32]}>
           <meshBasicMaterial
             color="#8b5cf6"
             transparent
-            opacity={0.7}
+            opacity={0.18}
           />
-        </mesh>
+        </Sphere>
 
-        <mesh rotation={[0.6, 0, 0.4]}>
-          <torusGeometry args={[1.7, 0.008, 10, 128]} />
-          <meshBasicMaterial
-            color="#c4b5fd"
-            transparent
-            opacity={0.45}
-          />
-        </mesh>
-
-        <mesh rotation={[1.15, 0.4, 0]}>
-          <torusGeometry args={[1.55, 0.006, 10, 128]} />
+        <Sphere args={[0.52, 32, 32]}>
           <meshBasicMaterial
             color="#a78bfa"
             transparent
-            opacity={0.35}
+            opacity={0.08}
+            wireframe
           />
-        </mesh>
-
-        {/* =====================================================
-            NETWORK CONNECTIONS
-            ===================================================== */}
-
-        {connections.map((connection, index) => (
-          <Line
-            key={index}
-            points={connection}
-            color="#a78bfa"
-            transparent
-            opacity={0.55}
-            lineWidth={1}
-          />
-        ))}
-
-        {/* =====================================================
-            GLOWING DATA NODES
-            ===================================================== */}
-
-        {nodes.map((position, index) => (
-          <mesh
-            key={index}
-            position={position}
-          >
-            <sphereGeometry
-              args={[
-                index % 3 === 0 ? 0.07 : 0.045,
-                16,
-                16,
-              ]}
-            />
-
-            <meshBasicMaterial
-              color={
-                index % 3 === 0
-                  ? "#ffffff"
-                  : "#c4b5fd"
-              }
-            />
-          </mesh>
-        ))}
-
-        {/* =====================================================
-            CENTER AI CORE
-            ===================================================== */}
-
-        <group ref={core}>
-
-          <Sphere args={[0.25, 32, 32]}>
-            <meshBasicMaterial
-              color="#ffffff"
-            />
-          </Sphere>
-
-          <Sphere args={[0.36, 32, 32]}>
-            <meshBasicMaterial
-              color="#8b5cf6"
-              transparent
-              opacity={0.18}
-            />
-          </Sphere>
-
-          <Sphere args={[0.48, 32, 32]}>
-            <meshBasicMaterial
-              color="#a78bfa"
-              transparent
-              opacity={0.08}
-              wireframe
-            />
-          </Sphere>
-
-        </group>
-
-        {/* =====================================================
-            SMALL ORBITING DATA POINTS
-            ===================================================== */}
-
-        <mesh position={[1.75, 0, 0]}>
-          <sphereGeometry args={[0.055, 16, 16]} />
-          <meshBasicMaterial color="#ffffff" />
-        </mesh>
-
-        <mesh position={[-1.75, 0, 0]}>
-          <sphereGeometry args={[0.055, 16, 16]} />
-          <meshBasicMaterial color="#c4b5fd" />
-        </mesh>
-
-        <mesh position={[0, 1.75, 0]}>
-          <sphereGeometry args={[0.05, 16, 16]} />
-          <meshBasicMaterial color="#ffffff" />
-        </mesh>
-
-        <mesh position={[0, -1.75, 0]}>
-          <sphereGeometry args={[0.05, 16, 16]} />
-          <meshBasicMaterial color="#c4b5fd" />
-        </mesh>
-
+        </Sphere>
       </group>
-    </Float>
+
+      {/* Floating data points */}
+      <mesh position={[1.75, 0, 0]}>
+        <sphereGeometry args={[0.055, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" />
+      </mesh>
+
+      <mesh position={[-1.75, 0, 0]}>
+        <sphereGeometry args={[0.055, 16, 16]} />
+        <meshBasicMaterial color="#c4b5fd" />
+      </mesh>
+
+      <mesh position={[0, 1.75, 0]}>
+        <sphereGeometry args={[0.055, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" />
+      </mesh>
+
+      <mesh position={[0, -1.75, 0]}>
+        <sphereGeometry args={[0.055, 16, 16]} />
+        <meshBasicMaterial color="#c4b5fd" />
+      </mesh>
+    </group>
   );
 }
 
-/* ---------------- 3D HERO SCENE ---------------- */
+/* =========================================================
+   THREE.JS SCENE
+   ========================================================= */
 
 function HeroScene() {
   return (
     <Canvas
       camera={{
-        position: [0, 0, 5.2],
+        position: [0, 0, 5],
         fov: 45,
       }}
       dpr={[1, 2]}
@@ -375,56 +309,50 @@ function HeroScene() {
         alpha: true,
       }}
     >
-
-      {/* Soft holographic lighting */}
-
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={0.6} />
 
       <pointLight
         position={[4, 4, 5]}
-        intensity={25}
+        intensity={20}
         color="#a78bfa"
       />
 
       <pointLight
         position={[-4, -2, 3]}
-        intensity={18}
+        intensity={15}
         color="#6366f1"
       />
 
       <pointLight
         position={[0, -4, -2]}
-        intensity={12}
+        intensity={10}
         color="#ffffff"
       />
 
       <HolographicSphere />
 
-      <Environment preset="city" />
-
-      {/* Mouse + Touch + Touchpad interaction */}
-
+      {/* Mouse / touchpad / touchscreen control */}
       <OrbitControls
+        enableRotate={true}
         enableZoom={true}
         enablePan={false}
         enableDamping={true}
         dampingFactor={0.08}
         rotateSpeed={0.7}
-        zoomSpeed={0.65}
-        minDistance={3.4}
+        zoomSpeed={0.7}
+        minDistance={3.3}
         maxDistance={7}
-        autoRotate={false}
-        enableRotate={true}
       />
-
     </Canvas>
   );
 }
 
-/* ---------------- NAVBAR ---------------- */
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
     ["Work", "#work"],
@@ -435,7 +363,6 @@ function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-5 md:px-10 py-5">
-
       <div className="max-w-7xl mx-auto glass rounded-full px-5 py-3 flex items-center justify-between">
 
         <a
@@ -445,8 +372,8 @@ function Navbar() {
           KM<span className="text-violet-400">.</span>
         </a>
 
-        <div className="hidden md:flex items-center gap-8">
-
+        {/* Desktop navigation */}
+        <div className="hidden md:flex items-center gap-7">
           {links.map(([name, href]) => (
             <a
               key={name}
@@ -456,61 +383,70 @@ function Navbar() {
               {name}
             </a>
           ))}
-
         </div>
 
+        {/* Desktop buttons */}
         <div className="hidden md:flex items-center gap-3">
+          <a
+            href={PERSONAL.resume}
+            target="_blank"
+            rel="noreferrer"
+            className="glass px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition"
+          >
+            Resume
+          </a>
 
-  <a
-    href="/resume.pdf"
-    target="_blank"
-    rel="noreferrer"
-    className="glass px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition"
-  >
-    Resume
-  </a>
+          <a
+            href="#contact"
+            className="flex items-center gap-2 bg-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-violet-200 transition"
+          >
+            Let's Talk
+            <ArrowUpRight size={16} />
+          </a>
+        </div>
 
-  <a
-    href="#contact"
-    className="flex items-center gap-2 bg-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-violet-200 transition"
-  >
-    Let's Talk
-    <ArrowUpRight size={16} />
-  </a>
-
-</div>
-
+        {/* Mobile menu button */}
         <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden"
+          type="button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden text-white"
+          aria-label="Toggle menu"
         >
-          {open ? <X /> : <Menu />}
+          {menuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
-
       </div>
 
-      {open && (
+      {/* Mobile menu */}
+      {menuOpen && (
         <div className="md:hidden mt-2 glass rounded-3xl p-6">
-
           {links.map(([name, href]) => (
             <a
               key={name}
               href={href}
-              onClick={() => setOpen(false)}
-              className="block py-4 text-lg"
+              onClick={() => setMenuOpen(false)}
+              className="block py-3 text-lg text-white/80"
             >
               {name}
             </a>
           ))}
 
+          <a
+            href={PERSONAL.resume}
+            target="_blank"
+            rel="noreferrer"
+            className="block mt-3 py-3 text-lg text-violet-300"
+          >
+            View Resume
+          </a>
         </div>
       )}
-
     </nav>
   );
 }
 
-/* ---------------- HERO ---------------- */
+/* =========================================================
+   HERO
+   ========================================================= */
 
 function Hero() {
   return (
@@ -518,21 +454,16 @@ function Hero() {
       id="home"
       className="min-h-screen relative overflow-hidden flex items-center"
     >
-
       <div className="absolute inset-0 grid-background opacity-40" />
 
       <div className="max-w-7xl mx-auto w-full px-6 md:px-10 pt-32 pb-20 relative z-10">
-
         <div className="grid lg:grid-cols-2 gap-10 items-center">
 
+          {/* Hero text */}
           <div>
-
             <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 text-xs text-white/60 mb-8">
-
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-
               Available for opportunities
-
             </div>
 
             <p className="text-violet-300 uppercase tracking-[0.25em] text-sm mb-5">
@@ -540,47 +471,21 @@ function Hero() {
             </p>
 
             <h1 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight">
-
               Building
-
               <br />
-
-              <span className="text-gradient">
-                ideas
-              </span>
-
+              <span className="text-gradient">ideas</span>
               <br />
-
               into reality.
-
             </h1>
 
             <p className="mt-8 text-white/55 max-w-xl text-base md:text-lg leading-relaxed">
-              I'm Karishma Mukilan, an Electrical and Electronics
+              I&apos;m Karishma Mukilan, an Electrical and Electronics
               Engineering student exploring software, embedded systems,
-              IoT and modern digital experiences.
+              automation, IoT and modern digital experiences.
             </p>
 
+            {/* Main buttons */}
             <div className="flex flex-wrap gap-4 mt-9">
-
-  <a
-    href="#work"
-    className="bg-white text-black px-6 py-3 rounded-full font-medium flex items-center gap-2 hover:bg-violet-200 transition"
-  >
-    View Projects
-    <ArrowUpRight size={18} />
-  </a>
-
-  <a
-    href="/resume.pdf"
-    target="_blank"
-    rel="noreferrer"
-    className="glass px-6 py-3 rounded-full font-medium hover:bg-white/10 transition"
-  >
-    View Resume
-  </a>
-
-</div>
 
               <a
                 href="#work"
@@ -591,189 +496,124 @@ function Hero() {
               </a>
 
               <a
-                href="#contact"
+                href={PERSONAL.resume}
+                target="_blank"
+                rel="noreferrer"
                 className="glass px-6 py-3 rounded-full font-medium hover:bg-white/10 transition"
               >
-                Contact Me
+                View Resume
               </a>
 
             </div>
 
-            <div className="flex gap-4 mt-10">
+            {/* Social links */}
+            <div className="flex items-center gap-4 mt-10">
 
               <a
-                href="https://www.linkedin.com/in/karishma-mukilan-5151373b4/"
+                href={PERSONAL.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="text-white/50 hover:text-white transition"
+                aria-label="LinkedIn"
+                className="glass p-3 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition"
               >
                 <Linkedin size={20} />
               </a>
 
               <a
-                href="https://github.com/karishmamukilan20"
+                href={PERSONAL.github}
                 target="_blank"
                 rel="noreferrer"
-                className="text-white/50 hover:text-white transition"
+                aria-label="GitHub"
+                className="glass p-3 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition"
               >
                 <Github size={20} />
               </a>
 
               <a
-                href="mailto:karishmamukilan2008@gmail.com"
-                className="text-white/50 hover:text-white transition"
+                href={`mailto:${PERSONAL.email}`}
+                aria-label="Email"
+                className="glass p-3 rounded-xl text-white/60 hover:text-white hover:bg-white/10 transition"
               >
                 <Mail size={20} />
               </a>
 
             </div>
-
           </div>
 
-          {/* FUTURISTIC SPHERE */}
-
+          {/* 3D sphere */}
           <div className="h-[450px] md:h-[600px] relative">
 
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-
               <div className="w-[280px] h-[280px] md:w-[430px] md:h-[430px] rounded-full bg-violet-500/10 blur-[100px]" />
-
             </div>
 
             <HeroScene />
 
           </div>
-
         </div>
-
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/30 flex flex-col items-center gap-2">
-
+      {/* Scroll indicator */}
+      <a
+        href="#work"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/30 flex flex-col items-center gap-2 hover:text-white/60 transition"
+      >
         <span className="text-xs uppercase tracking-widest">
           Drag to explore
         </span>
 
         <ArrowDown size={16} />
-
-      </div>
-
+      </a>
     </section>
   );
 }
 
-/* ---------------- MARQUEE ---------------- */
+/* =========================================================
+   MARQUEE
+   ========================================================= */
 
 function Marquee() {
-
   const items = [
     "EEE",
     "WEB DEVELOPMENT",
     "EMBEDDED SYSTEMS",
     "IoT",
     "REACT",
-    "AI",
-    "AUTOMOTIVE EV",
+    "AUTOMATION",
+    "EV TECHNOLOGY",
   ];
 
   return (
-    <div className="marquee border-y border-white/10 py-5">
-
-      <div className="marquee-track gap-10">
-
+    <div className="marquee border-y border-white/10 py-5 overflow-hidden">
+      <div className="marquee-track flex gap-10 whitespace-nowrap">
         {[...items, ...items].map((item, index) => (
-
           <div
-            key={index}
+            key={`${item}-${index}`}
             className="flex items-center gap-10 text-white/30 font-display font-semibold tracking-widest"
           >
-
             <span>{item}</span>
-
-            <span className="text-violet-400">
-              ✦
-            </span>
-
+            <span className="text-violet-400">✦</span>
           </div>
-
         ))}
-
       </div>
-
     </div>
   );
 }
 
-/* ---------------- PROJECT CARD ---------------- */
+/* =========================================================
+   PROJECT CARD
+   ========================================================= */
 
 function ProjectCard({ project }) {
-
-  const card = useRef();
-
-  const handleMove = (e) => {
-
-    const rect =
-      card.current.getBoundingClientRect();
-
-    const x =
-      e.clientX - rect.left;
-
-    const y =
-      e.clientY - rect.top;
-
-    const rotateY =
-      ((x / rect.width) - 0.5) * 10;
-
-    const rotateX =
-      ((y / rect.height) - 0.5) * -10;
-
-    gsap.to(card.current, {
-      rotateX,
-      rotateY,
-      duration: 0.5,
-      ease: "power3.out",
-    });
-
-    card.current.style.setProperty(
-      "--mx",
-      `${x}px`
-    );
-
-    card.current.style.setProperty(
-      "--my",
-      `${y}px`
-    );
-  };
-
-  const handleLeave = () => {
-
-    gsap.to(card.current, {
-      rotateX: 0,
-      rotateY: 0,
-      duration: 0.7,
-      ease: "power3.out",
-    });
-
-  };
-
   return (
-    <div
-      className="project-card"
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-    >
-
-      <div
-        ref={card}
-        className="project-inner glass glass-hover rounded-3xl p-6 md:p-8 relative overflow-hidden h-full"
-      >
+    <div className="project-card h-full">
+      <div className="project-inner glass glass-hover rounded-3xl p-6 md:p-8 relative overflow-hidden h-full">
 
         <div className="project-glow" />
 
         <div className="relative z-10">
 
           <div className="flex justify-between items-start mb-12">
-
             <span className="text-white/30 text-sm">
               {project.number}
             </span>
@@ -781,7 +621,6 @@ function ProjectCard({ project }) {
             <span className="text-xs text-white/40 border border-white/10 px-3 py-1 rounded-full">
               {project.category}
             </span>
-
           </div>
 
           <h3 className="font-display text-2xl md:text-3xl font-bold">
@@ -793,32 +632,30 @@ function ProjectCard({ project }) {
           </p>
 
           <div className="flex flex-wrap gap-2 mt-7">
-
             {project.tags.map((tag) => (
-
               <span
                 key={tag}
                 className="text-xs px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/60"
               >
                 {tag}
               </span>
-
             ))}
-
           </div>
 
-          <div className="flex gap-3 mt-8">
+          <div className="flex gap-5 mt-8">
 
             <a
               href={project.link}
               className="flex items-center gap-2 text-sm hover:text-violet-300 transition"
             >
-              Live
+              View
               <ExternalLink size={15} />
             </a>
 
             <a
               href={project.github}
+              target="_blank"
+              rel="noreferrer"
               className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition"
             >
               GitHub
@@ -826,116 +663,99 @@ function ProjectCard({ project }) {
             </a>
 
           </div>
-
         </div>
-
       </div>
-
     </div>
   );
 }
 
-/* ---------------- WORK ---------------- */
+/* =========================================================
+   WORK
+   ========================================================= */
 
 function Work() {
-
   return (
     <section
       id="work"
       className="py-28 md:py-36 px-6 md:px-10"
     >
-
       <div className="max-w-7xl mx-auto">
 
         <div className="mb-14">
-
           <p className="text-violet-300 uppercase tracking-[0.25em] text-sm">
             Selected Work
           </p>
 
           <h2 className="font-display text-4xl md:text-6xl font-bold mt-4">
-            Things I've built.
+            Things I&apos;ve built.
           </h2>
 
           <p className="text-white/45 mt-5 max-w-2xl">
             A collection of engineering, software and creative projects
             built while learning and experimenting with technology.
           </p>
-
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-
           {projects.map((project) => (
-
             <ProjectCard
               key={project.number}
               project={project}
             />
-
           ))}
-
         </div>
 
       </div>
-
     </section>
   );
 }
 
-/* ---------------- ABOUT ---------------- */
+/* =========================================================
+   ABOUT
+   ========================================================= */
 
 function About() {
-
   return (
     <section
       id="about"
       className="py-28 md:py-36 px-6 md:px-10 border-t border-white/10"
     >
-
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16">
 
         <div>
-
           <p className="text-violet-300 uppercase tracking-[0.25em] text-sm">
             About Me
           </p>
 
           <h2 className="font-display text-4xl md:text-6xl font-bold mt-4">
-
             Curious by nature.
-
             <br />
-
             Builder by choice.
-
           </h2>
-
         </div>
 
         <div className="text-white/55 text-lg leading-relaxed space-y-6">
 
           <p>
-            I'm an Electrical and Electronics Engineering student
+            I&apos;m an Electrical and Electronics Engineering student
             passionate about combining hardware and software to create
             useful technology.
           </p>
 
           <p>
-            My current interests include embedded systems, IoT,
-            automotive EV technology, web development and emerging
-            technologies.
+            My interests include embedded systems, IoT, automation,
+            web development, MERN stack development and automotive
+            EV technology.
           </p>
 
           <p>
-            I enjoy learning by building projects, participating in
-            hackathons and turning ideas into working prototypes.
+            I enjoy learning by building projects, experimenting with
+            technology and turning ideas into working prototypes.
           </p>
 
           <div className="grid grid-cols-2 gap-5 pt-6">
 
             <div className="glass rounded-2xl p-5">
-
               <div className="text-3xl font-bold text-white">
                 2nd
               </div>
@@ -943,11 +763,9 @@ function About() {
               <div className="text-sm text-white/40 mt-1">
                 Year EEE Student
               </div>
-
             </div>
 
             <div className="glass rounded-2xl p-5">
-
               <div className="text-3xl font-bold text-white">
                 10+
               </div>
@@ -955,29 +773,25 @@ function About() {
               <div className="text-sm text-white/40 mt-1">
                 Technologies Exploring
               </div>
-
             </div>
 
           </div>
-
         </div>
-
       </div>
-
     </section>
   );
 }
 
-/* ---------------- SKILLS ---------------- */
+/* =========================================================
+   SKILLS
+   ========================================================= */
 
 function Skills() {
-
   return (
     <section
       id="skills"
       className="py-28 md:py-36 px-6 md:px-10"
     >
-
       <div className="max-w-7xl mx-auto">
 
         <p className="text-violet-300 uppercase tracking-[0.25em] text-sm">
@@ -991,7 +805,6 @@ function Skills() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
 
           {skills.map((skill) => (
-
             <div
               key={skill.title}
               className="glass glass-hover rounded-3xl p-6"
@@ -1006,42 +819,58 @@ function Skills() {
               </h3>
 
               <div className="mt-5 space-y-2">
-
                 {skill.items.map((item) => (
-
                   <div
                     key={item}
                     className="text-sm text-white/45"
                   >
                     {item}
                   </div>
-
                 ))}
-
               </div>
 
             </div>
-
           ))}
 
         </div>
-
       </div>
-
     </section>
   );
 }
 
-/* ---------------- CONTACT ---------------- */
+/* =========================================================
+   CONTACT
+   ========================================================= */
 
 function Contact() {
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSubmitted(true);
+
+    const form = event.currentTarget;
+    const name = form.elements.name.value;
+    const email = form.elements.email.value;
+    const message = form.elements.message.value;
+
+    const subject = encodeURIComponent(
+      `Portfolio Contact from ${name}`
+    );
+
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    );
+
+    window.location.href =
+      `mailto:${PERSONAL.email}?subject=${subject}&body=${body}`;
+  };
 
   return (
     <section
       id="contact"
       className="py-28 md:py-36 px-6 md:px-10 border-t border-white/10"
     >
-
       <div className="max-w-7xl mx-auto">
 
         <div className="glass rounded-[2rem] p-8 md:p-14 overflow-hidden relative">
@@ -1051,107 +880,116 @@ function Contact() {
           <div className="relative z-10 grid lg:grid-cols-2 gap-12">
 
             <div>
-
               <p className="text-violet-300 uppercase tracking-[0.25em] text-sm">
                 Contact
               </p>
 
               <h2 className="font-display text-4xl md:text-6xl font-bold mt-4">
-
-                Let's build something
-
+                Let&apos;s build something
                 <span className="text-gradient">
                   {" "}great.
                 </span>
-
               </h2>
 
               <p className="text-white/45 mt-6 max-w-md">
                 Have an internship opportunity, project idea or
-                collaboration in mind? I'd love to hear from you.
+                collaboration in mind? I&apos;d love to hear from you.
               </p>
 
               <div className="flex gap-4 mt-8">
 
                 <a
-                  href="https://www.linkedin.com/in/karishma-mukilan-5151373b4/"
+                  href={PERSONAL.linkedin}
                   target="_blank"
                   rel="noreferrer"
+                  aria-label="LinkedIn"
                   className="glass p-3 rounded-xl hover:bg-white/10 transition"
                 >
                   <Linkedin size={20} />
                 </a>
 
                 <a
-                  href="https://github.com/karishmamukilan20"
+                  href={PERSONAL.github}
                   target="_blank"
                   rel="noreferrer"
+                  aria-label="GitHub"
                   className="glass p-3 rounded-xl hover:bg-white/10 transition"
                 >
                   <Github size={20} />
                 </a>
 
+                <a
+                  href={`mailto:${PERSONAL.email}`}
+                  aria-label="Email"
+                  className="glass p-3 rounded-xl hover:bg-white/10 transition"
+                >
+                  <Mail size={20} />
+                </a>
+
               </div>
 
+              <a
+                href={PERSONAL.resume}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 mt-7 text-sm text-violet-300 hover:text-white transition"
+              >
+                View my resume
+                <ArrowUpRight size={16} />
+              </a>
             </div>
 
             <form
-              onSubmit={(e) => {
-
-                e.preventDefault();
-
-                window.location.href =
-                  "mailto:karishmamukilan2008@gmail.com";
-
-              }}
+              onSubmit={handleSubmit}
               className="space-y-4"
             >
 
               <input
+                name="name"
                 type="text"
                 placeholder="Your name"
                 required
-                className="w-full glass rounded-xl px-5 py-4 text-white placeholder:text-white/25"
+                className="w-full glass rounded-xl px-5 py-4 text-white placeholder:text-white/25 outline-none"
               />
 
               <input
+                name="email"
                 type="email"
                 placeholder="Your email"
                 required
-                className="w-full glass rounded-xl px-5 py-4 text-white placeholder:text-white/25"
+                className="w-full glass rounded-xl px-5 py-4 text-white placeholder:text-white/25 outline-none"
               />
 
               <textarea
+                name="message"
                 placeholder="Tell me about your project..."
                 rows="5"
                 required
-                className="w-full glass rounded-xl px-5 py-4 text-white placeholder:text-white/25 resize-none"
+                className="w-full glass rounded-xl px-5 py-4 text-white placeholder:text-white/25 resize-none outline-none"
               />
 
               <button
                 type="submit"
                 className="w-full bg-white text-black rounded-xl py-4 font-semibold hover:bg-violet-200 transition flex items-center justify-center gap-2"
               >
-                Send Message
+                {submitted ? "Opening Email..." : "Send Message"}
                 <ArrowUpRight size={18} />
               </button>
 
             </form>
 
           </div>
-
         </div>
-
       </div>
-
     </section>
   );
 }
 
-/* ---------------- FOOTER ---------------- */
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 function Footer() {
-
   return (
     <footer className="px-6 md:px-10 py-10">
 
@@ -1161,7 +999,34 @@ function Footer() {
           © {new Date().getFullYear()} Karishma Mukilan
         </p>
 
-        <div className="flex gap-6">
+        <div className="flex flex-wrap gap-6">
+
+          <a
+            href={PERSONAL.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-white transition"
+          >
+            LinkedIn
+          </a>
+
+          <a
+            href={PERSONAL.github}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-white transition"
+          >
+            GitHub
+          </a>
+
+          <a
+            href={PERSONAL.resume}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-white transition"
+          >
+            Resume
+          </a>
 
           <a
             href="#home"
@@ -1170,80 +1035,42 @@ function Footer() {
             Back to top
           </a>
 
-          <a
-            href="mailto:karishmamukilan2008@gmail.com"
-            className="hover:text-white transition"
-          >
-            Email
-          </a>
-
         </div>
-
       </div>
-
     </footer>
   );
 }
 
-/* ---------------- APP ---------------- */
+/* =========================================================
+   APP
+   ========================================================= */
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 700);
 
-    const lenis = new Lenis({
-      duration: 1.2,
-      smoothWheel: true,
-    });
-
-    function raf(time) {
-
-      lenis.raf(time);
-
-      requestAnimationFrame(raf);
-
-    }
-
-    requestAnimationFrame(raf);
-
-    const reveals =
-      document.querySelectorAll(".reveal");
-
-    reveals.forEach((element) => {
-
-      gsap.fromTo(
-        element,
-        {
-          opacity: 0,
-          y: 70,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: element,
-            start: "top 85%",
-          },
-        }
-      );
-
-    });
-
-    return () => {
-
-      lenis.destroy();
-
-      ScrollTrigger
-        .getAll()
-        .forEach((trigger) =>
-          trigger.kill()
-        );
-
-    };
-
+    return () => clearTimeout(timer);
   }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+
+          <div className="w-14 h-14 rounded-full border border-violet-400/30 border-t-violet-400 animate-spin mx-auto" />
+
+          <p className="mt-5 text-xs tracking-[0.3em] uppercase text-white/40">
+            Initializing
+          </p>
+
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -1252,31 +1079,15 @@ export default function App() {
       <Navbar />
 
       <main>
-
         <Hero />
-
         <Marquee />
-
-        <div className="reveal">
-          <Work />
-        </div>
-
-        <div className="reveal">
-          <About />
-        </div>
-
-        <div className="reveal">
-          <Skills />
-        </div>
-
-        <div className="reveal">
-          <Contact />
-        </div>
-
+        <Work />
+        <About />
+        <Skills />
+        <Contact />
       </main>
 
       <Footer />
-
     </>
   );
 }
