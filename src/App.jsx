@@ -550,6 +550,25 @@ function Hero() {
 
             <div className="flex flex-wrap gap-4 mt-9">
 
+  <a
+    href="#work"
+    className="bg-white text-black px-6 py-3 rounded-full font-medium flex items-center gap-2 hover:bg-violet-200 transition"
+  >
+    View Projects
+    <ArrowUpRight size={18} />
+  </a>
+
+  <a
+    href="/resume.pdf"
+    target="_blank"
+    rel="noreferrer"
+    className="glass px-6 py-3 rounded-full font-medium hover:bg-white/10 transition"
+  >
+    View Resume
+  </a>
+
+</div>
+
               <a
                 href="#work"
                 className="bg-white text-black px-6 py-3 rounded-full font-medium flex items-center gap-2 hover:bg-violet-200 transition"
