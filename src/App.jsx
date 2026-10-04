@@ -459,13 +459,26 @@ function Navbar() {
 
         </div>
 
-        <a
-          href="#contact"
-          className="hidden md:flex items-center gap-2 bg-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-violet-200 transition"
-        >
-          Let's Talk
-          <ArrowUpRight size={16} />
-        </a>
+        <div className="hidden md:flex items-center gap-3">
+
+  <a
+    href="/resume.pdf"
+    target="_blank"
+    rel="noreferrer"
+    className="glass px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition"
+  >
+    Resume
+  </a>
+
+  <a
+    href="#contact"
+    className="flex items-center gap-2 bg-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-violet-200 transition"
+  >
+    Let's Talk
+    <ArrowUpRight size={16} />
+  </a>
+
+</div>
 
         <button
           onClick={() => setOpen(!open)}
