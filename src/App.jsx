@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 /* =========================================================
-   PERSONAL INFORMATION
+   PERSONAL DETAILS
    ========================================================= */
 
 const PERSONAL = {
@@ -42,7 +42,6 @@ const projects = [
     tags: ["IoT", "Signal Processing", "Python", "EEE"],
     category: "Engineering",
     link: "#",
-    github: PERSONAL.github,
   },
   {
     number: "02",
@@ -52,7 +51,6 @@ const projects = [
     tags: ["React", "Three.js", "JavaScript", "UI/UX"],
     category: "Web Development",
     link: "#home",
-    github: PERSONAL.github,
   },
   {
     number: "03",
@@ -62,7 +60,6 @@ const projects = [
     tags: ["React", "API", "JavaScript", "UI"],
     category: "Web Application",
     link: "#",
-    github: PERSONAL.github,
   },
 ];
 
@@ -99,7 +96,7 @@ const skills = [
 ];
 
 /* =========================================================
-   HOLOGRAPHIC SPHERE
+   3D HOLOGRAPHIC SPHERE
    ========================================================= */
 
 function HolographicSphere() {
@@ -165,7 +162,7 @@ function HolographicSphere() {
 
   return (
     <group ref={groupRef} scale={1.25}>
-      {/* Outer wireframe shell */}
+      {/* Main spherical shell */}
       <Sphere args={[1.5, 48, 48]}>
         <meshBasicMaterial
           color="#8b5cf6"
@@ -175,7 +172,7 @@ function HolographicSphere() {
         />
       </Sphere>
 
-      {/* Second shell */}
+      {/* Inner shell */}
       <Sphere args={[1.3, 32, 32]}>
         <meshBasicMaterial
           color="#c4b5fd"
@@ -185,7 +182,6 @@ function HolographicSphere() {
         />
       </Sphere>
 
-      {/* Inner shell */}
       <Sphere args={[1.05, 32, 32]}>
         <meshBasicMaterial
           color="#a78bfa"
@@ -195,7 +191,7 @@ function HolographicSphere() {
         />
       </Sphere>
 
-      {/* Orbital ring 1 */}
+      {/* Orbital rings */}
       <mesh ref={ringOneRef}>
         <torusGeometry args={[1.65, 0.012, 12, 128]} />
         <meshBasicMaterial
@@ -205,7 +201,6 @@ function HolographicSphere() {
         />
       </mesh>
 
-      {/* Orbital ring 2 */}
       <mesh ref={ringTwoRef}>
         <torusGeometry args={[1.72, 0.008, 12, 128]} />
         <meshBasicMaterial
@@ -237,14 +232,13 @@ function HolographicSphere() {
               16,
             ]}
           />
-
           <meshBasicMaterial
             color={index % 3 === 0 ? "#ffffff" : "#c4b5fd"}
           />
         </mesh>
       ))}
 
-      {/* Central AI core */}
+      {/* AI core */}
       <group ref={coreRef}>
         <Sphere args={[0.22, 32, 32]}>
           <meshBasicMaterial color="#ffffff" />
@@ -268,32 +262,26 @@ function HolographicSphere() {
         </Sphere>
       </group>
 
-      {/* Floating data points */}
-      <mesh position={[1.75, 0, 0]}>
-        <sphereGeometry args={[0.055, 16, 16]} />
-        <meshBasicMaterial color="#ffffff" />
-      </mesh>
-
-      <mesh position={[-1.75, 0, 0]}>
-        <sphereGeometry args={[0.055, 16, 16]} />
-        <meshBasicMaterial color="#c4b5fd" />
-      </mesh>
-
-      <mesh position={[0, 1.75, 0]}>
-        <sphereGeometry args={[0.055, 16, 16]} />
-        <meshBasicMaterial color="#ffffff" />
-      </mesh>
-
-      <mesh position={[0, -1.75, 0]}>
-        <sphereGeometry args={[0.055, 16, 16]} />
-        <meshBasicMaterial color="#c4b5fd" />
-      </mesh>
+      {/* Floating points */}
+      {[
+        [1.75, 0, 0],
+        [-1.75, 0, 0],
+        [0, 1.75, 0],
+        [0, -1.75, 0],
+      ].map((position, index) => (
+        <mesh key={`floating-${index}`} position={position}>
+          <sphereGeometry args={[0.055, 16, 16]} />
+          <meshBasicMaterial
+            color={index % 2 === 0 ? "#ffffff" : "#c4b5fd"}
+          />
+        </mesh>
+      ))}
     </group>
   );
 }
 
 /* =========================================================
-   THREE.JS SCENE
+   3D SCENE
    ========================================================= */
 
 function HeroScene() {
@@ -331,12 +319,11 @@ function HeroScene() {
 
       <HolographicSphere />
 
-      {/* Mouse / touchpad / touchscreen control */}
       <OrbitControls
-        enableRotate={true}
-        enableZoom={true}
+        enableRotate
+        enableZoom
         enablePan={false}
-        enableDamping={true}
+        enableDamping
         dampingFactor={0.08}
         rotateSpeed={0.7}
         zoomSpeed={0.7}
@@ -348,7 +335,7 @@ function HeroScene() {
 }
 
 /* =========================================================
-   NAVIGATION
+   NAVBAR
    ========================================================= */
 
 function Navbar() {
@@ -364,7 +351,6 @@ function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 px-5 md:px-10 py-5">
       <div className="max-w-7xl mx-auto glass rounded-full px-5 py-3 flex items-center justify-between">
-
         <a
           href="#home"
           className="font-display text-lg font-bold tracking-tight"
@@ -372,7 +358,6 @@ function Navbar() {
           KM<span className="text-violet-400">.</span>
         </a>
 
-        {/* Desktop navigation */}
         <div className="hidden md:flex items-center gap-7">
           {links.map(([name, href]) => (
             <a
@@ -385,7 +370,6 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Desktop buttons */}
         <div className="hidden md:flex items-center gap-3">
           <a
             href={PERSONAL.resume}
@@ -400,12 +384,11 @@ function Navbar() {
             href="#contact"
             className="flex items-center gap-2 bg-white text-black px-5 py-2 rounded-full text-sm font-medium hover:bg-violet-200 transition"
           >
-            Let's Talk
+            Let&apos;s Talk
             <ArrowUpRight size={16} />
           </a>
         </div>
 
-        {/* Mobile menu button */}
         <button
           type="button"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -416,7 +399,6 @@ function Navbar() {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden mt-2 glass rounded-3xl p-6">
           {links.map(([name, href]) => (
@@ -458,8 +440,6 @@ function Hero() {
 
       <div className="max-w-7xl mx-auto w-full px-6 md:px-10 pt-32 pb-20 relative z-10">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
-
-          {/* Hero text */}
           <div>
             <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 text-xs text-white/60 mb-8">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
@@ -484,9 +464,7 @@ function Hero() {
               automation, IoT and modern digital experiences.
             </p>
 
-            {/* Main buttons */}
             <div className="flex flex-wrap gap-4 mt-9">
-
               <a
                 href="#work"
                 className="bg-white text-black px-6 py-3 rounded-full font-medium flex items-center gap-2 hover:bg-violet-200 transition"
@@ -503,12 +481,9 @@ function Hero() {
               >
                 View Resume
               </a>
-
             </div>
 
-            {/* Social links */}
             <div className="flex items-center gap-4 mt-10">
-
               <a
                 href={PERSONAL.linkedin}
                 target="_blank"
@@ -536,24 +511,19 @@ function Hero() {
               >
                 <Mail size={20} />
               </a>
-
             </div>
           </div>
 
-          {/* 3D sphere */}
           <div className="h-[450px] md:h-[600px] relative">
-
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="w-[280px] h-[280px] md:w-[430px] md:h-[430px] rounded-full bg-violet-500/10 blur-[100px]" />
             </div>
 
             <HeroScene />
-
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <a
         href="#work"
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/30 flex flex-col items-center gap-2 hover:text-white/60 transition"
@@ -561,7 +531,6 @@ function Hero() {
         <span className="text-xs uppercase tracking-widest">
           Drag to explore
         </span>
-
         <ArrowDown size={16} />
       </a>
     </section>
@@ -608,11 +577,9 @@ function ProjectCard({ project }) {
   return (
     <div className="project-card h-full">
       <div className="project-inner glass glass-hover rounded-3xl p-6 md:p-8 relative overflow-hidden h-full">
-
         <div className="project-glow" />
 
         <div className="relative z-10">
-
           <div className="flex justify-between items-start mb-12">
             <span className="text-white/30 text-sm">
               {project.number}
@@ -642,27 +609,13 @@ function ProjectCard({ project }) {
             ))}
           </div>
 
-          <div className="flex gap-5 mt-8">
-
-            <a
-              href={project.link}
-              className="flex items-center gap-2 text-sm hover:text-violet-300 transition"
-            >
-              View
-              <ExternalLink size={15} />
-            </a>
-
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition"
-            >
-              GitHub
-              <Github size={15} />
-            </a>
-
-          </div>
+          <a
+            href={project.link}
+            className="inline-flex items-center gap-2 mt-8 text-sm hover:text-violet-300 transition"
+          >
+            View Project
+            <ExternalLink size={15} />
+          </a>
         </div>
       </div>
     </div>
@@ -680,7 +633,6 @@ function Work() {
       className="py-28 md:py-36 px-6 md:px-10"
     >
       <div className="max-w-7xl mx-auto">
-
         <div className="mb-14">
           <p className="text-violet-300 uppercase tracking-[0.25em] text-sm">
             Selected Work
@@ -704,7 +656,6 @@ function Work() {
             />
           ))}
         </div>
-
       </div>
     </section>
   );
@@ -721,7 +672,6 @@ function About() {
       className="py-28 md:py-36 px-6 md:px-10 border-t border-white/10"
     >
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16">
-
         <div>
           <p className="text-violet-300 uppercase tracking-[0.25em] text-sm">
             About Me
@@ -735,7 +685,6 @@ function About() {
         </div>
 
         <div className="text-white/55 text-lg leading-relaxed space-y-6">
-
           <p>
             I&apos;m an Electrical and Electronics Engineering student
             passionate about combining hardware and software to create
@@ -744,8 +693,7 @@ function About() {
 
           <p>
             My interests include embedded systems, IoT, automation,
-            web development, MERN stack development and automotive
-            EV technology.
+            web development, MERN stack development and EV technology.
           </p>
 
           <p>
@@ -754,12 +702,10 @@ function About() {
           </p>
 
           <div className="grid grid-cols-2 gap-5 pt-6">
-
             <div className="glass rounded-2xl p-5">
               <div className="text-3xl font-bold text-white">
                 2nd
               </div>
-
               <div className="text-sm text-white/40 mt-1">
                 Year EEE Student
               </div>
@@ -769,12 +715,10 @@ function About() {
               <div className="text-3xl font-bold text-white">
                 10+
               </div>
-
               <div className="text-sm text-white/40 mt-1">
                 Technologies Exploring
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -793,7 +737,6 @@ function Skills() {
       className="py-28 md:py-36 px-6 md:px-10"
     >
       <div className="max-w-7xl mx-auto">
-
         <p className="text-violet-300 uppercase tracking-[0.25em] text-sm">
           Skills
         </p>
@@ -803,13 +746,11 @@ function Skills() {
         </h2>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-
           {skills.map((skill) => (
             <div
               key={skill.title}
               className="glass glass-hover rounded-3xl p-6"
             >
-
               <div className="w-11 h-11 rounded-xl bg-violet-500/10 border border-violet-400/20 flex items-center justify-center text-violet-300">
                 {skill.icon}
               </div>
@@ -828,10 +769,8 @@ function Skills() {
                   </div>
                 ))}
               </div>
-
             </div>
           ))}
-
         </div>
       </div>
     </section>
@@ -847,7 +786,6 @@ function Contact() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setSubmitted(true);
 
     const form = event.currentTarget;
     const name = form.elements.name.value;
@@ -862,6 +800,8 @@ function Contact() {
       `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
     );
 
+    setSubmitted(true);
+
     window.location.href =
       `mailto:${PERSONAL.email}?subject=${subject}&body=${body}`;
   };
@@ -872,23 +812,18 @@ function Contact() {
       className="py-28 md:py-36 px-6 md:px-10 border-t border-white/10"
     >
       <div className="max-w-7xl mx-auto">
-
         <div className="glass rounded-[2rem] p-8 md:p-14 overflow-hidden relative">
-
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl" />
 
           <div className="relative z-10 grid lg:grid-cols-2 gap-12">
-
             <div>
               <p className="text-violet-300 uppercase tracking-[0.25em] text-sm">
                 Contact
               </p>
 
               <h2 className="font-display text-4xl md:text-6xl font-bold mt-4">
-                Let&apos;s build something
-                <span className="text-gradient">
-                  {" "}great.
-                </span>
+                Let&apos;s build something{" "}
+                <span className="text-gradient">great.</span>
               </h2>
 
               <p className="text-white/45 mt-6 max-w-md">
@@ -897,7 +832,6 @@ function Contact() {
               </p>
 
               <div className="flex gap-4 mt-8">
-
                 <a
                   href={PERSONAL.linkedin}
                   target="_blank"
@@ -925,7 +859,6 @@ function Contact() {
                 >
                   <Mail size={20} />
                 </a>
-
               </div>
 
               <a
@@ -943,7 +876,6 @@ function Contact() {
               onSubmit={handleSubmit}
               className="space-y-4"
             >
-
               <input
                 name="name"
                 type="text"
@@ -975,9 +907,7 @@ function Contact() {
                 {submitted ? "Opening Email..." : "Send Message"}
                 <ArrowUpRight size={18} />
               </button>
-
             </form>
-
           </div>
         </div>
       </div>
@@ -992,15 +922,12 @@ function Contact() {
 function Footer() {
   return (
     <footer className="px-6 md:px-10 py-10">
-
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-5 text-sm text-white/35">
-
         <p>
           © {new Date().getFullYear()} Karishma Mukilan
         </p>
 
         <div className="flex flex-wrap gap-6">
-
           <a
             href={PERSONAL.linkedin}
             target="_blank"
@@ -1034,7 +961,6 @@ function Footer() {
           >
             Back to top
           </a>
-
         </div>
       </div>
     </footer>
@@ -1060,13 +986,11 @@ export default function App() {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
-
           <div className="w-14 h-14 rounded-full border border-violet-400/30 border-t-violet-400 animate-spin mx-auto" />
 
           <p className="mt-5 text-xs tracking-[0.3em] uppercase text-white/40">
             Initializing
           </p>
-
         </div>
       </div>
     );
